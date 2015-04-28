@@ -652,28 +652,27 @@ public class CardPairsUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabelMouseClicked(JLabel jLabel, int number) {
-         
+    private void jLabelMouseClicked(JLabel jLabel, int place) {
+        
+        int number = numbers[place];
+        
         if (whoseTurn == 0) {
             return;
         }
         
         if (numCards == 0) {
             jLabel.setIcon(new ImageIcon(images[number]));
+            isKnownCard.put(place, true);
             firstLabel = jLabel;
             firstCard = number;
             numCards++;
         } else if (numCards == 1) {
             jLabel.setIcon(new ImageIcon(images[number]));
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            isKnownCard.put(number, true);
             if (number % 4 == firstCard % 4) {
                 hiddenCardNum -= 2;
                 isHiddenCard.put(firstCard, false);
-                isHiddenCard.put(numbers[0], false);
+                isHiddenCard.put(number, false);
                 if (whoseTurn == 0) {
                     computerScore += 2;
                 } else if (whoseTurn == 1) {
@@ -692,211 +691,211 @@ public class CardPairsUI extends javax.swing.JFrame {
         }
     }
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        jLabelMouseClicked(this.jLabel1, numbers[0]);
+        jLabelMouseClicked(this.jLabel1, 0);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        jLabelMouseClicked(this.jLabel2, numbers[1]);
+        jLabelMouseClicked(this.jLabel2, 1);
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        jLabelMouseClicked(this.jLabel3, numbers[2]);
+        jLabelMouseClicked(this.jLabel3, 2);
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        jLabelMouseClicked(this.jLabel4, numbers[3]);
+        jLabelMouseClicked(this.jLabel4, 3);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        jLabelMouseClicked(this.jLabel5, numbers[4]);
+        jLabelMouseClicked(this.jLabel5, 4);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        jLabelMouseClicked(this.jLabel6, numbers[5]);
+        jLabelMouseClicked(this.jLabel6, 5);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        jLabelMouseClicked(this.jLabel7, numbers[6]);
+        jLabelMouseClicked(this.jLabel7, 6);
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        jLabelMouseClicked(this.jLabel8, numbers[7]);
+        jLabelMouseClicked(this.jLabel8, 7);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        jLabelMouseClicked(this.jLabel9, numbers[8]);
+        jLabelMouseClicked(this.jLabel9, 8);
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        jLabelMouseClicked(this.jLabel10, numbers[9]);
+        jLabelMouseClicked(this.jLabel10, 9);
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-        jLabelMouseClicked(this.jLabel11, numbers[10]);
+        jLabelMouseClicked(this.jLabel11, 10);
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        jLabelMouseClicked(this.jLabel12, numbers[11]);
+        jLabelMouseClicked(this.jLabel12, 11);
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
-        jLabelMouseClicked(this.jLabel13, numbers[12]);
+        jLabelMouseClicked(this.jLabel13, 12);
     }//GEN-LAST:event_jLabel13MouseClicked
 
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
-        jLabelMouseClicked(this.jLabel14, numbers[13]);
+        jLabelMouseClicked(this.jLabel14, 13);
     }//GEN-LAST:event_jLabel14MouseClicked
 
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
-        jLabelMouseClicked(this.jLabel15, numbers[14]);
+        jLabelMouseClicked(this.jLabel15, 14);
     }//GEN-LAST:event_jLabel15MouseClicked
 
     private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
-        jLabelMouseClicked(this.jLabel16, numbers[15]);
+        jLabelMouseClicked(this.jLabel16, 15);
     }//GEN-LAST:event_jLabel16MouseClicked
 
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
-        jLabelMouseClicked(this.jLabel17, numbers[16]);
+        jLabelMouseClicked(this.jLabel17, 16);
     }//GEN-LAST:event_jLabel17MouseClicked
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-        jLabelMouseClicked(this.jLabel18, numbers[17]);
+        jLabelMouseClicked(this.jLabel18, 17);
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
-        jLabelMouseClicked(this.jLabel19, numbers[18]);
+        jLabelMouseClicked(this.jLabel19, 18);
     }//GEN-LAST:event_jLabel19MouseClicked
 
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
-        jLabelMouseClicked(this.jLabel20, numbers[19]);
+        jLabelMouseClicked(this.jLabel20, 19);
     }//GEN-LAST:event_jLabel20MouseClicked
 
     private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
-        jLabelMouseClicked(this.jLabel21, numbers[20]);
+        jLabelMouseClicked(this.jLabel21, 20);
     }//GEN-LAST:event_jLabel21MouseClicked
 
     private void jLabel22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel22MouseClicked
-        jLabelMouseClicked(this.jLabel22, numbers[21]);
+        jLabelMouseClicked(this.jLabel22, 21);
     }//GEN-LAST:event_jLabel22MouseClicked
 
     private void jLabel23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel23MouseClicked
-        jLabelMouseClicked(this.jLabel23, numbers[22]);
+        jLabelMouseClicked(this.jLabel23, 22);
     }//GEN-LAST:event_jLabel23MouseClicked
 
     private void jLabel24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel24MouseClicked
-        jLabelMouseClicked(this.jLabel24, numbers[23]);
+        jLabelMouseClicked(this.jLabel24, 23);
     }//GEN-LAST:event_jLabel24MouseClicked
 
     private void jLabel25MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel25MouseClicked
-        jLabelMouseClicked(this.jLabel25, numbers[24]);
+        jLabelMouseClicked(this.jLabel25, 24);
     }//GEN-LAST:event_jLabel25MouseClicked
 
     private void jLabel26MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel26MouseClicked
-        jLabelMouseClicked(this.jLabel26, numbers[25]);
+        jLabelMouseClicked(this.jLabel26, 25);
     }//GEN-LAST:event_jLabel26MouseClicked
 
     private void jLabel27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel27MouseClicked
-        jLabelMouseClicked(this.jLabel27, numbers[26]);
+        jLabelMouseClicked(this.jLabel27, 26);
     }//GEN-LAST:event_jLabel27MouseClicked
 
     private void jLabel28MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel28MouseClicked
-        jLabelMouseClicked(this.jLabel28, numbers[27]);
+        jLabelMouseClicked(this.jLabel28, 27);
     }//GEN-LAST:event_jLabel28MouseClicked
 
     private void jLabel29MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel29MouseClicked
-        jLabelMouseClicked(this.jLabel29, numbers[28]);
+        jLabelMouseClicked(this.jLabel29, 28);
     }//GEN-LAST:event_jLabel29MouseClicked
 
     private void jLabel30MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel30MouseClicked
-        jLabelMouseClicked(this.jLabel30, numbers[29]);
+        jLabelMouseClicked(this.jLabel30, 29);
     }//GEN-LAST:event_jLabel30MouseClicked
 
     private void jLabel31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel31MouseClicked
-        jLabelMouseClicked(this.jLabel31, numbers[30]);
+        jLabelMouseClicked(this.jLabel31, 30);
     }//GEN-LAST:event_jLabel31MouseClicked
 
     private void jLabel32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel32MouseClicked
-        jLabelMouseClicked(this.jLabel32, numbers[31]);
+        jLabelMouseClicked(this.jLabel32, 31);
     }//GEN-LAST:event_jLabel32MouseClicked
 
     private void jLabel33MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel33MouseClicked
-        jLabelMouseClicked(this.jLabel33, numbers[32]);
+        jLabelMouseClicked(this.jLabel33, 32);
     }//GEN-LAST:event_jLabel33MouseClicked
 
     private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
-        jLabelMouseClicked(this.jLabel34, numbers[33]);
+        jLabelMouseClicked(this.jLabel34, 33);
     }//GEN-LAST:event_jLabel34MouseClicked
 
     private void jLabel35MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel35MouseClicked
-        jLabelMouseClicked(this.jLabel35, numbers[34]);
+        jLabelMouseClicked(this.jLabel35, 34);
     }//GEN-LAST:event_jLabel35MouseClicked
 
     private void jLabel36MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel36MouseClicked
-        jLabelMouseClicked(this.jLabel36, numbers[35]);
+        jLabelMouseClicked(this.jLabel36, 35);
     }//GEN-LAST:event_jLabel36MouseClicked
 
     private void jLabel37MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel37MouseClicked
-        jLabelMouseClicked(this.jLabel37, numbers[36]);
+        jLabelMouseClicked(this.jLabel37, 36);
     }//GEN-LAST:event_jLabel37MouseClicked
 
     private void jLabel38MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel38MouseClicked
-        jLabelMouseClicked(this.jLabel38, numbers[37]);
+        jLabelMouseClicked(this.jLabel38, 37);
     }//GEN-LAST:event_jLabel38MouseClicked
 
     private void jLabel39MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel39MouseClicked
-        jLabelMouseClicked(this.jLabel39, numbers[38]);
+        jLabelMouseClicked(this.jLabel39, 38);
     }//GEN-LAST:event_jLabel39MouseClicked
 
     private void jLabel40MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel40MouseClicked
-        jLabelMouseClicked(this.jLabel40, numbers[39]);
+        jLabelMouseClicked(this.jLabel40, 39);
     }//GEN-LAST:event_jLabel40MouseClicked
 
     private void jLabel41MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel41MouseClicked
-        jLabelMouseClicked(this.jLabel41, numbers[40]);
+        jLabelMouseClicked(this.jLabel41, 40);
     }//GEN-LAST:event_jLabel41MouseClicked
 
     private void jLabel42MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel42MouseClicked
-        jLabelMouseClicked(this.jLabel42, numbers[41]);
+        jLabelMouseClicked(this.jLabel42, 41);
     }//GEN-LAST:event_jLabel42MouseClicked
 
     private void jLabel43MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel43MouseClicked
-        jLabelMouseClicked(this.jLabel43, numbers[42]);
+        jLabelMouseClicked(this.jLabel43, 42);
     }//GEN-LAST:event_jLabel43MouseClicked
 
     private void jLabel44MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel44MouseClicked
-        jLabelMouseClicked(this.jLabel44, numbers[43]);
+        jLabelMouseClicked(this.jLabel44, 43);
     }//GEN-LAST:event_jLabel44MouseClicked
 
     private void jLabel45MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel45MouseClicked
-        jLabelMouseClicked(this.jLabel45, numbers[44]);
+        jLabelMouseClicked(this.jLabel45, 44);
     }//GEN-LAST:event_jLabel45MouseClicked
 
     private void jLabel46MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel46MouseClicked
-        jLabelMouseClicked(this.jLabel46, numbers[45]);
+        jLabelMouseClicked(this.jLabel46, 45);
     }//GEN-LAST:event_jLabel46MouseClicked
 
     private void jLabel47MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel47MouseClicked
-        jLabelMouseClicked(this.jLabel47, numbers[46]);
+        jLabelMouseClicked(this.jLabel47, 46);
     }//GEN-LAST:event_jLabel47MouseClicked
 
     private void jLabel48MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel48MouseClicked
-        jLabelMouseClicked(this.jLabel48, numbers[47]);
+        jLabelMouseClicked(this.jLabel48, 47);
     }//GEN-LAST:event_jLabel48MouseClicked
 
     private void jLabel49MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel49MouseClicked
-        jLabelMouseClicked(this.jLabel49, numbers[48]);
+        jLabelMouseClicked(this.jLabel49, 48);
     }//GEN-LAST:event_jLabel49MouseClicked
 
     private void jLabel50MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel50MouseClicked
-        jLabelMouseClicked(this.jLabel50, numbers[49]);
+        jLabelMouseClicked(this.jLabel50, 49);
     }//GEN-LAST:event_jLabel50MouseClicked
 
     private void jLabel51MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel51MouseClicked
-        jLabelMouseClicked(this.jLabel51, numbers[50]);
+        jLabelMouseClicked(this.jLabel51, 50);
     }//GEN-LAST:event_jLabel51MouseClicked
 
     private void jLabel52MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel52MouseClicked
-        jLabelMouseClicked(this.jLabel52, numbers[51]);
+        jLabelMouseClicked(this.jLabel52, 51);
     }//GEN-LAST:event_jLabel52MouseClicked
 
     /**
