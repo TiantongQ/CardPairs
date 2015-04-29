@@ -8,6 +8,8 @@ package my.cardpairs;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -18,15 +20,16 @@ import javax.swing.JLabel;
 public class CardPairsUI extends javax.swing.JFrame {
 
     static Hashtable<Integer, JLabel> labels;
-    static Hashtable<Integer, LinkedList> unknownHidden;
+    static LinkedList<Integer> unknownHidden;
     static Hashtable<Integer, LinkedList> knownHidden;
     static Hashtable<Integer, Boolean> isFaceUp;
     static Hashtable<Integer, Boolean> isKnown;
     static int[] numbers;
     static ImageIcon[] images;
     
-    static int whoseTurn = 1; // computer goes first, is 0
+    static int freeze = 0; // human goes first
     static int numCards = 0; // how many cards are flipped
+    static int numHidden = 52;
     
     static JLabel firstLabel = null;
     static int firstPlace = 0;
@@ -105,12 +108,9 @@ public class CardPairsUI extends javax.swing.JFrame {
         labels.put(50, jLabel52);
         
         
-        unknownHidden = new Hashtable<Integer, LinkedList>();
-        for (int i = 0; i < 13; i++) {
-            unknownHidden.put(i, new LinkedList<Integer>());
-        }
+        unknownHidden = new LinkedList<Integer>();
         for (int i = 0; i < 52; i++) {
-            unknownHidden.get(numbers[i] / 4).add(i);
+            unknownHidden.add(i);
         }
 
         knownHidden = new Hashtable<Integer, LinkedList>();
@@ -733,13 +733,15 @@ public class CardPairsUI extends javax.swing.JFrame {
         
         int number = numbers[place];
         
-        if (whoseTurn == 0 || isFaceUp.get(place)) {
+        if (freeze == 1 || isFaceUp.get(place)) {
             return;
         }
         
         if (numCards == 0) {
-            if (unknownHidden.get(number / 4).contains(place)) {
-                unknownHidden.get(number / 4).remove(place);
+            if (unknownHidden.contains(place)) {
+                unknownHidden.remove((Integer) place);
+            } else if (knownHidden.get(number / 4).contains(place)) {
+                knownHidden.get(number / 4).remove((Integer) place);
             }
             jLabel.setIcon(images[number]);
             isKnown.put(place, true);
@@ -751,8 +753,11 @@ public class CardPairsUI extends javax.swing.JFrame {
             firstNumber = number;
             
         } else if (numCards == 1) {
-            if (unknownHidden.get(number / 4).contains(place)) {
-                unknownHidden.get(number / 4).remove(place);
+            freeze = 1;
+            if (unknownHidden.contains(place)) {
+                unknownHidden.remove((Integer) place);
+            } else if (knownHidden.get(number / 4).contains(place)) {
+                knownHidden.get(number / 4).remove((Integer) place);
             }
             jLabel.setIcon(images[number]);
             isKnown.put(place, true);
@@ -761,20 +766,28 @@ public class CardPairsUI extends javax.swing.JFrame {
             
             if (number / 4 == firstNumber / 4) {
                 playerScore += 2;
-                if(knownHidden.isEmpty()) {
+                numHidden -= 2;
+                if(numHidden == 0) {
                     printOutcome(computerScore, playerScore);
                 }
+                freeze = 0;
                 return;
             }
             
             knownHidden.get(firstNumber / 4).add(firstPlace);
             knownHidden.get(number / 4).add(place);
-            revertCardStates(firstLabel, jLabel);
             isFaceUp.put(firstPlace, false);
             isFaceUp.put(place, false);
 
-            whoseTurn = 1 - whoseTurn;
-            computerTurn();
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    revertCardStates(firstLabel, jLabel);
+                    computerTurn();
+                }
+            }, 1000);
+            
         }
     }
     
@@ -792,57 +805,62 @@ public class CardPairsUI extends javax.swing.JFrame {
         if (bestSize > 1) {
             firstPlace = (Integer) knownHidden.get(bestNumber).pop();
             firstNumber = numbers[firstPlace];
-            firstLabel = labels.get(firstNumber);
+            firstLabel = labels.get(firstPlace);
             
             secondPlace = (Integer) knownHidden.get(bestNumber).pop();
             secondNumber = numbers[secondPlace];
-            secondLabel = labels.get(secondNumber);
+            secondLabel = labels.get(secondPlace);
         } else {
-            do {
-                firstPlace = (int) (Math.random() * 52.0);
-                firstNumber = numbers[firstPlace];
-                firstLabel = labels.get(firstNumber);
-            } while (isFaceUp.get(firstPlace) || isKnown.get(firstPlace));
+            firstPlace = unknownHidden.remove((int) (Math.random() * unknownHidden.size()));
+            firstNumber = numbers[firstPlace];
+            firstLabel = labels.get(firstPlace);
             
             if (knownHidden.get(firstNumber / 4).size() > 0) {
                 secondPlace = (Integer) knownHidden.get(firstNumber / 4).pop();
                 secondNumber = numbers[secondPlace];
-                secondLabel = labels.get(secondNumber);
+                secondLabel = labels.get(secondPlace);
             } else {
-                do {
-                    secondPlace = (int) (Math.random() * 52.0);
-                    secondNumber = numbers[secondPlace];
-                    secondLabel = labels.get(secondNumber);
-                } while (isFaceUp.get(firstPlace) || secondPlace == firstPlace);
+
+                secondPlace = unknownHidden.remove((int) (Math.random() * unknownHidden.size()));
+                secondNumber = numbers[secondPlace];
+                secondLabel = labels.get(secondPlace);
             }
         }
         
-        if (unknownHidden.get(firstNumber / 4).contains(firstPlace)) {
-            unknownHidden.get(firstNumber / 4).remove(firstPlace);
-        }
         firstLabel.setIcon(images[firstNumber]);
         isKnown.put(firstPlace, true);
-
-        if (unknownHidden.get(secondNumber / 4).contains(secondPlace)) {
-            unknownHidden.get(secondNumber / 4).remove(secondPlace);
-        }
         secondLabel.setIcon(images[secondNumber]);
         isKnown.put(secondPlace, true);
 
         if (secondNumber / 4 == firstNumber / 4) {
             computerScore += 2;
-            if(knownHidden.isEmpty()) {
+            numHidden -= 2;
+            if(numHidden == 0) {
                 printOutcome(computerScore, playerScore);
             }
-            computerTurn();
+            isFaceUp.put(firstPlace, true);
+            isFaceUp.put(secondPlace, true);
+            
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    computerTurn();
+                }
+            }, 1000);
+        } else {
+            knownHidden.get(firstNumber / 4).add(firstPlace);
+            knownHidden.get(secondNumber / 4).add(secondPlace);
+
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    revertCardStates(firstLabel, secondLabel);
+                    freeze = 0;
+                }
+            }, 1000);
         }
-
-        knownHidden.get(firstNumber / 4).add(firstLabel);
-        knownHidden.get(secondNumber / 4).add(secondLabel);
-        revertCardStates(firstLabel, secondLabel);
-
-        whoseTurn = 1 - whoseTurn;
-
     }
     
     private void revertCardStates(JLabel jLabel1, JLabel jLabel2) {
