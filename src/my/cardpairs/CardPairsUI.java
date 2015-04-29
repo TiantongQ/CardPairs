@@ -20,31 +20,31 @@ import javax.swing.JLabel;
  */
 public class CardPairsUI extends javax.swing.JFrame {
 
-    static Hashtable<Integer, JLabel> labels;
-    static LinkedList<Integer> unknownHidden;
-    static Hashtable<Integer, LinkedList> knownHidden;
-    static Hashtable<Integer, Boolean> isFaceUp;
-    static Hashtable<Integer, Boolean> isKnown;
-    static int[] numbers;
-    static ImageIcon[] images;
+    static Hashtable<Integer, JLabel> labels; // Hashtable that associates each JLabel with physical position in window
+    static LinkedList<Integer> unknownHidden; // LinkedList of physical positions which were never face up
+    static Hashtable<Integer, LinkedList> knownHidden; // physical positions for each card number which were faced up before
+    static Hashtable<Integer, Boolean> isFaceUp; // Hashtable of whether a physical position is faced up
+    static Hashtable<Integer, Boolean> isKnown; // Hashtable of whether a physical position's card number is known
+    static int[] numbers; // mapping from physical position to number that maps in orderly fashion to card number and suit
+    static ImageIcon[] images; // index is the number that maps in orderly fashion to card number and suit
     
-    static int freeze = 0; // human goes first
-    static int numCards = 0; // how many cards are flipped
-    static int numHidden = 52;
+    static int freeze = 0; // indicates whether human input is ignored; human goes first
+    static int numCards = 0; // how many cards were turned in the most recent card pair turn
+    static int numHidden = 52; // how many cards are facing down
     
-    static JLabel firstLabel = null;
-    static int firstPlace = 0;
-    static int firstNumber = 0;
+    static JLabel firstLabel = null; // JLabel of first card turned face up
+    static int firstPlace = 0; // physical position of first card turned face up
+    static int firstNumber = 0; // number that maps in orderly fashion to card number and suit, of first card made face up
     
-    static JLabel secondLabel = null;
-    static int secondPlace = 0;
-    static int secondNumber = 0;
+    static JLabel secondLabel = null; // JLabel of second card turned face up
+    static int secondPlace = 0; // physical position of second card turned face up
+    static int secondNumber = 0; // number that maps in orderly fashion to card number and suit, of second card made face up
     
-    static int computerScore = 0;
-    static int playerScore = 0;
+    static int computerScore = 0; // score of computer AI
+    static int playerScore = 0; // score of human player
     
     /**
-     * Creates new form CardPairsUI
+     * This is where some data structures are set up. Creates new form CardPairsUI
      */
     public CardPairsUI() {
         initComponents();
@@ -570,7 +570,7 @@ public class CardPairsUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel45)
                             .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(34, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -667,12 +667,12 @@ public class CardPairsUI extends javax.swing.JFrame {
                                         .addComponent(jLabel34)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel35)))))
-                        .addGap(0, 8, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addComponent(jLabel11)
@@ -733,22 +733,27 @@ public class CardPairsUI extends javax.swing.JFrame {
                     .addComponent(jLabel51)
                     .addComponent(jLabel52))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This is where most of the game logic takes place
+     * 
+     * @param jLabel the JLabel for which the mouse click event happened
+     * @param place the physical position for the JLabel for which the mouse click event happened
+     */
     private void jLabelMouseClicked(JLabel jLabel, int place) {
         
         int number = numbers[place];
         
-        if (freeze == 1 || isFaceUp.get(place)) {
+        if (freeze == 1 || isFaceUp.get(place)) { // seeing which clicks to ignore
             return;
         }
         
-        if (numCards == 0) {
+        if (numCards == 0) { // seeing if this is first of two choices in human player's card pair turn
             if (unknownHidden.contains(place)) {
                 unknownHidden.remove((Integer) place);
             } else if (knownHidden.get(number / 4).contains(place)) {
@@ -763,7 +768,7 @@ public class CardPairsUI extends javax.swing.JFrame {
             firstPlace = place;
             firstNumber = number;
             
-        } else if (numCards == 1) {
+        } else if (numCards == 1) { // seeing if this is second of two choices in human player's card pair turn
             freeze = 1;
             if (unknownHidden.contains(place)) {
                 unknownHidden.remove((Integer) place);
@@ -775,7 +780,7 @@ public class CardPairsUI extends javax.swing.JFrame {
             isFaceUp.put(place, true);
             numCards = 0;
             
-            if (number / 4 == firstNumber / 4) {
+            if (number / 4 == firstNumber / 4) { // two cards match in their number, resulting in score for human player
                 playerScore += 2;
                 numHidden -= 2;
                 label1.setAlignment(Label.CENTER);
@@ -790,7 +795,7 @@ public class CardPairsUI extends javax.swing.JFrame {
             isFaceUp.put(place, false);
 
             Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
+            timer.schedule(new TimerTask() { // two cards don't match, want human player to see cards before they disappear
                 @Override
                 public void run() {
                     revertCardStates(firstLabel, jLabel);
@@ -801,18 +806,22 @@ public class CardPairsUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * This is where the game logic for the computer AI takes place
+     * 
+     */
     private void computerTurn() {
 
         int bestNumber = -1;
         int bestSize = -1;
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 13; i++) { // seeing card number with most known face down cards
             if (knownHidden.get(i).size() > bestSize) {
                 bestSize = knownHidden.get(i).size();
                 bestNumber = i;
             }
         }
         
-        if (bestSize > 1) {
+        if (bestSize > 1) { // if we already know a card number with 2 or more cards to pick
             firstPlace = (Integer) knownHidden.get(bestNumber).pop();
             firstNumber = numbers[firstPlace];
             firstLabel = labels.get(firstPlace);
@@ -820,7 +829,7 @@ public class CardPairsUI extends javax.swing.JFrame {
             secondPlace = (Integer) knownHidden.get(bestNumber).pop();
             secondNumber = numbers[secondPlace];
             secondLabel = labels.get(secondPlace);
-        } else {
+        } else { // if we have to first pick an unknown face down card
             firstPlace = unknownHidden.remove((int) (Math.random() * unknownHidden.size()));
             firstNumber = numbers[firstPlace];
             firstLabel = labels.get(firstPlace);
@@ -842,7 +851,7 @@ public class CardPairsUI extends javax.swing.JFrame {
         secondLabel.setIcon(images[secondNumber]);
         isKnown.put(secondPlace, true);
 
-        if (secondNumber / 4 == firstNumber / 4) {
+        if (secondNumber / 4 == firstNumber / 4) { // two cards match in their number, resulting in score for computer AI
             computerScore += 2;
             numHidden -= 2;
             label1.setAlignment(Label.CENTER);
@@ -850,11 +859,13 @@ public class CardPairsUI extends javax.swing.JFrame {
             isFaceUp.put(firstPlace, true);
             isFaceUp.put(secondPlace, true);
             
-            Timer timer = new Timer();
+            Timer timer = new Timer(); // two cards match, want human player to see cards before they disappear
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    computerTurn();
+                    if (numHidden != 0) {
+                        computerTurn();
+                    }
                 }
             }, 1000);
         } else {
@@ -862,7 +873,7 @@ public class CardPairsUI extends javax.swing.JFrame {
             knownHidden.get(secondNumber / 4).add(secondPlace);
 
             Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
+            timer.schedule(new TimerTask() { // two cards don't match, want human player to see cards before they disappear
                 @Override
                 public void run() {
                     revertCardStates(firstLabel, secondLabel);
@@ -872,6 +883,12 @@ public class CardPairsUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * This is where face up cards are made face down again
+     * 
+     * @param jLabel1 the first JLabel to have icon image restored to back of card
+     * @param jLabel2 the second JLabel to have icon image restored to back of card
+     */
     private void revertCardStates(JLabel jLabel1, JLabel jLabel2) {
         jLabel1.setIcon(new ImageIcon(getClass().getResource("/my/cardpairs/b1fv.png")));
         jLabel2.setIcon(new ImageIcon(getClass().getResource("/my/cardpairs/b1fv.png")));
@@ -1086,6 +1103,8 @@ public class CardPairsUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel52MouseClicked
 
     /**
+     * This is where some data structures are set up
+     * 
      * @param args the command line arguments
      */
     public static void main(String args[]) {
